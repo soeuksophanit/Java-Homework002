@@ -26,3 +26,7 @@ INNER JOIN instructors i
     ON c.instructor_id = i.instructor_id
 INNER JOIN students st
     ON st.student_id = c.course_id;
+
+SELECT * FROM instructors WHERE instructor_id=1;
+
+INSERT INTO instructors VALUES (DEFAULT,'william','william@gmail.com') RETURNING instructor_id

@@ -19,4 +19,9 @@ public class StudentServiceImp implements StudentService {
     public List<Student> getAllStudents() {
         return studentRepository.findAllStudents();
     }
+
+    @Override
+    public Student getStudentById(Integer id) {
+        return studentRepository.findStudentById(id);
+    }
 }

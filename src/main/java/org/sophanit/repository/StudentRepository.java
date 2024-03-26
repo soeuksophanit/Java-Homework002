@@ -1,8 +1,6 @@
 package org.sophanit.repository;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.sophanit.model.Student;
 
 import java.util.List;
@@ -10,8 +8,17 @@ import java.util.List;
 @Mapper
 public interface StudentRepository {
     @Select("SELECT * FROM students")
-    @Result(property = "studentId" ,column = "student_id")
-    @Result(property = "studentName" ,column = "student_name")
-    @Result(property = "phoneNumber" ,column = "phone_number")
+    @Results(
+            id = "studentMapper",
+            value = {
+                    @Result(property = "studentId" ,column = "student_id"),
+                    @Result(property = "studentName" ,column = "student_name"),
+                    @Result(property = "phoneNumber" ,column = "phone_number")
+            }
+    )
     List<Student> findAllStudents();
+
+    @ResultMap("studentMapper")
+    @Select("SELECT * FROM students WHERE student_id=#{id}")
+    Student findStudentById(Integer id);
 }
