@@ -1,6 +1,7 @@
 package org.sophanit.controller;
 
 import org.sophanit.model.Student;
+import org.sophanit.model.request.StudentRequest;
 import org.sophanit.model.response.Response;
 import org.sophanit.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -34,13 +35,24 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response<Student>> getStudentById(@PathVariable("id") Integer studentId){
-        Response<Student> response = Response.<Student>builder()
-                .message("Get Student By ID")
-                .payload(studentService.getStudentById(studentId))
-                .httpStatus(HttpStatus.OK)
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build();
+        Student getStudent = studentService.getStudentById(studentId);
+        Response<Student> response;
+        if (getStudent!=null){
+            response = Response.<Student>builder()
+                    .message("Get Student By ID")
+                    .payload(studentService.getStudentById(studentId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+        }else {
+            response = Response.<Student>builder()
+                    .message("Student Not found")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+        }
         return ResponseEntity.ok(response);
+
 
     }
 
@@ -51,14 +63,30 @@ public class StudentController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Response<Student>> addNewStudent(@RequestBody Student student){
+    public ResponseEntity<Response<Student>> addNewStudent(@RequestBody StudentRequest studentRequest){
+
         return null;
 
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Student>> deleteStudentById(@PathVariable("id") Integer studentId){
-        return null;
-
+        Integer storeId = studentService.deleteStudentById(studentId);
+        Response<Student> response = null;
+        if (storeId!=null){
+            response = Response.<Student>builder()
+                    .message("Delete Successfully")
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Student>builder()
+                    .message("Not found to delete")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
     }
 }

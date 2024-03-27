@@ -32,19 +32,47 @@ public class InstructorController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<Response<Instructor>> getInstructorById(@PathVariable("id") Integer instructorId){
-        Response<Instructor> response = Response.<Instructor>builder()
-                .message("Get Instructor By ID")
-                .payload(instructorService.getInstructorById(instructorId))
-                .httpStatus(HttpStatus.OK)
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.ok(response);
+        Instructor getInstructor = instructorService.getInstructorById(instructorId);
+        if (getInstructor!=null){
+            Response<Instructor> response = Response.<Instructor>builder()
+                    .message("Get Instructor By ID")
+                    .payload(instructorService.getInstructorById(instructorId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            Response<Instructor> response = Response.<Instructor>builder()
+                    .message("Not Found Instructor")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Instructor>> updateInstructorById(@PathVariable("id") Integer instructorId){
-        return null;
+    public ResponseEntity<Response<Instructor>> updateInstructorById(@PathVariable("id") Integer instructorId,@RequestBody InstructorRequest instructorRequest){
+        Integer storeId = instructorService.updateInstructor(instructorId,instructorRequest);
+        Response<Instructor> response = null;
+        if (storeId!=null){
+            response = Response.<Instructor>builder()
+                    .message("Update Successfully")
+                    .payload(instructorService.getInstructorById(storeId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Instructor>builder()
+                    .message("Update Not Success")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
 
     }
 
@@ -69,15 +97,22 @@ public class InstructorController {
     public ResponseEntity<Response<Instructor>> deleteInstructorById(@PathVariable("id") Integer instructorId){
         Integer storeId = instructorService.deleteInstructorById(instructorId);
         Response<Instructor> response = null;
-        if (storeId!= null){
+        if (storeId!=null){
             response = Response.<Instructor>builder()
                     .message("Delete Successfully")
                     .timestamp(new Timestamp(System.currentTimeMillis()))
                     .httpStatus(HttpStatus.OK)
                     .build();
             return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Instructor>builder()
+                    .message("Delete not Successfully")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
         }
-        return null;
+
 
     }
 }

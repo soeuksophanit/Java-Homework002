@@ -44,4 +44,8 @@ public interface CourseRepository {
     Course getStudentByCourseById(Integer studentId);
 
 
+    @Select("DELETE FROM courses WHERE course_id = #{id} RETURNING course_id")
+    Integer deleteCourse(Integer id);
+
+
 }

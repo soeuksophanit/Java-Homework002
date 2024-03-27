@@ -24,4 +24,9 @@ public class StudentServiceImp implements StudentService {
     public Student getStudentById(Integer id) {
         return studentRepository.findStudentById(id);
     }
+
+    @Override
+    public Integer deleteStudentById(Integer id) {
+        return studentRepository.deleteStudentById(id);
+    }
 }

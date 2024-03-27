@@ -12,4 +12,5 @@ public interface CourseService {
 
     Integer addNewCourse(CourseRequest courseRequest);
     Integer updateCourseById(CourseRequest courseRequest,Integer id);
+    Integer deleteCourse(Integer id);
 }

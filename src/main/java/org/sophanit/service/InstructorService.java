@@ -12,4 +12,6 @@ public interface InstructorService {
     Integer addNewInstructor(InstructorRequest instructorRequest);
 
     Integer deleteInstructorById(Integer id);
+
+    Integer updateInstructor(Integer id,InstructorRequest instructorRequest);
 }

@@ -36,4 +36,9 @@ public class InstructorServiceImp implements InstructorService {
     public Integer deleteInstructorById(Integer id) {
         return instructorRepository.deleteInstructorById(id);
     }
+
+    @Override
+    public Integer updateInstructor(Integer id, InstructorRequest instructorRequest) {
+        return instructorRepository.updateInstructor(id,instructorRequest);
+    }
 }

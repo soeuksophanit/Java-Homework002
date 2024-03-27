@@ -36,4 +36,9 @@ public class CourseServiceImp implements CourseService {
     public Integer updateCourseById(CourseRequest courseRequest,Integer id) {
         return courseRepository.updateCourse(courseRequest,id);
     }
+
+    @Override
+    public Integer deleteCourse(Integer id) {
+        return courseRepository.deleteCourse(id);
+    }
 }

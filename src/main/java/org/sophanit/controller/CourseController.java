@@ -35,13 +35,25 @@ public class CourseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Response<Course>> getCourseById(@PathVariable("id") Integer courseId){
-        Response<Course> response = Response.<Course>builder()
-                .message("Get Course By ID")
-                .payload(courseService.getCourseById(courseId))
-                .httpStatus(HttpStatus.OK)
-                .timestamp(new Timestamp(System.currentTimeMillis()))
-                .build();
-        return ResponseEntity.ok(response);
+        Course getCourse = courseService.getCourseById(courseId);
+        Response<Course> response = null;
+        if (getCourse!=null){
+            response = Response.<Course>builder()
+                    .message("Get Course By ID")
+                    .payload(courseService.getCourseById(courseId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Course>builder()
+                    .message("Course Not found")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
+
 
     }
 
@@ -57,8 +69,14 @@ public class CourseController {
                     .timestamp(new Timestamp(System.currentTimeMillis()))
                     .build();
             return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Course>builder()
+                    .message("Update not Success")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
         }
-        return null;
 
     }
 
@@ -81,8 +99,23 @@ public class CourseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Course>> deleteCourseById(@PathVariable("id") Integer courseId){
-
-        return null;
+        Integer storeId = courseService.deleteCourse(courseId);
+        Response<Course> response = null;
+        if (storeId!=null){
+            response = Response.<Course>builder()
+                    .message("Delete Course Successfully")
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Course>builder()
+                    .message("Delete Course not Success")
+                    .httpStatus(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
 
     }
 }

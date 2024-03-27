@@ -22,6 +22,9 @@ public interface StudentRepository {
     List<Student> findAllStudents();
 
     @ResultMap("studentMapper")
-    @Select("SELECT * FROM students  WHERE student_id=#{id}")
+    @Select("SELECT * FROM students  WHERE student_id= #{id} ")
     Student findStudentById(Integer id);
+
+    @Select("DELETE FROM students WHERE student_id= #{id} RETURNING student_id")
+    Integer deleteStudentById(Integer id);
 }

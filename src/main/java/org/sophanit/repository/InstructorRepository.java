@@ -31,4 +31,9 @@ public interface InstructorRepository {
 
     @Select("DELETE FROM instructors WHERE instructor_id=#{id}")
     Integer deleteInstructorById(Integer id);
+
+    @Select("UPDATE instructors SET instructor_name= #{instructorRequest.instructor_name}," +
+            "email= #{instructorRequest.email} " +
+            "WHERE instructor_id= #{id} RETURNING instructor_id")
+    Integer updateInstructor(Integer id ,InstructorRequest instructorRequest);
 }
