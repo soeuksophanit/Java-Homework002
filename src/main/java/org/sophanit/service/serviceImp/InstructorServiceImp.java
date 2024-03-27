@@ -1,6 +1,7 @@
 package org.sophanit.service.serviceImp;
 
 import org.sophanit.model.Instructor;
+import org.sophanit.model.request.InstructorRequest;
 import org.sophanit.repository.InstructorRepository;
 import org.sophanit.service.InstructorService;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,12 @@ public class InstructorServiceImp implements InstructorService {
     }
 
     @Override
-    public Integer addNewInstructor(Instructor instructor) {
-        return instructorRepository.addInstructor(instructor);
+    public Integer addNewInstructor(InstructorRequest instructorRequest) {
+        return instructorRepository.addInstructor(instructorRequest);
+    }
+
+    @Override
+    public Integer deleteInstructorById(Integer id) {
+        return instructorRepository.deleteInstructorById(id);
     }
 }

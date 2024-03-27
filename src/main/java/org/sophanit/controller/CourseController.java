@@ -2,6 +2,7 @@ package org.sophanit.controller;
 
 import org.sophanit.model.Course;
 import org.sophanit.model.Instructor;
+import org.sophanit.model.request.CourseRequest;
 import org.sophanit.model.response.Response;
 import org.sophanit.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,10 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<Course>> getCourseById(@PathVariable("id") Integer instructorId){
+    public ResponseEntity<Response<Course>> getCourseById(@PathVariable("id") Integer courseId){
         Response<Course> response = Response.<Course>builder()
                 .message("Get Course By ID")
-                .payload(courseService.getCourseById(instructorId))
+                .payload(courseService.getCourseById(courseId))
                 .httpStatus(HttpStatus.OK)
                 .timestamp(new Timestamp(System.currentTimeMillis()))
                 .build();
@@ -45,19 +46,42 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Course>> updateCourseById(@PathVariable("id") Integer courseId){
+    public ResponseEntity<Response<Course>> updateCourseById(@PathVariable("id") Integer courseId,@RequestBody CourseRequest courseRequest){
+        Integer storeId = courseService.updateCourseById(courseRequest,courseId);
+        Response<Course> response = null;
+        if (storeId!=null){
+            response = Response.<Course>builder()
+                    .message("Update Successfully")
+                    .payload(courseService.getCourseById(storeId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
         return null;
 
     }
 
     @PostMapping("/")
-    public ResponseEntity<Response<Course>> addNewCourse(@RequestBody Course course){
+    public ResponseEntity<Response<Course>> addNewCourse(@RequestBody CourseRequest courseRequest){
+        Integer storeId = courseService.addNewCourse(courseRequest);
+        Response<Course> response = null;
+        if (storeId!=null){
+            response = Response.<Course>builder()
+                    .message("Add new course successfully")
+                    .payload(courseService.getCourseById(storeId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
         return null;
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response<Course>> deleteCourseById(@PathVariable("id") Integer instructorId){
+    public ResponseEntity<Response<Course>> deleteCourseById(@PathVariable("id") Integer courseId){
+
         return null;
 
     }

@@ -2,6 +2,7 @@ package org.sophanit.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.sophanit.model.Instructor;
+import org.sophanit.model.request.InstructorRequest;
 
 import java.util.List;
 
@@ -25,7 +26,9 @@ public interface InstructorRepository {
     Instructor findInstructorById(Integer id);
 
 
-    @Select("INSERT INTO instructors VALUES (DEFAULT,#{instructor.instructorName},#{instructor.email}) RETURNING instructor_id")
-    @ResultMap("instructorMapper")
-    Integer addInstructor(Instructor instructor);
+    @Select("INSERT INTO instructors VALUES (DEFAULT,#{request.instructor_name},#{request.email}) RETURNING instructor_id")
+    Integer addInstructor(@Param("request") InstructorRequest instructorRequest);
+
+    @Select("DELETE FROM instructors WHERE instructor_id=#{id}")
+    Integer deleteInstructorById(Integer id);
 }

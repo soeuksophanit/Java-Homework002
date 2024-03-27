@@ -1,6 +1,7 @@
 package org.sophanit.controller;
 
 import org.sophanit.model.Instructor;
+import org.sophanit.model.request.InstructorRequest;
 import org.sophanit.model.response.Response;
 import org.sophanit.service.InstructorService;
 import org.springframework.http.HttpStatus;
@@ -48,8 +49,8 @@ public class InstructorController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Response<Instructor>> addNewInstructor(@RequestBody Instructor instructor){
-        Integer storeNewId = instructorService.addNewInstructor(instructor);
+    public ResponseEntity<Response<Instructor>> addNewInstructor(@RequestBody InstructorRequest instructorRequest){
+        Integer storeNewId = instructorService.addNewInstructor(instructorRequest);
         Response<Instructor> response = null;
         if (storeNewId != null){
             response = Response.<Instructor>builder()
@@ -66,6 +67,16 @@ public class InstructorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Instructor>> deleteInstructorById(@PathVariable("id") Integer instructorId){
+        Integer storeId = instructorService.deleteInstructorById(instructorId);
+        Response<Instructor> response = null;
+        if (storeId!= null){
+            response = Response.<Instructor>builder()
+                    .message("Delete Successfully")
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+            return ResponseEntity.ok(response);
+        }
         return null;
 
     }
