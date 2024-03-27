@@ -50,3 +50,7 @@ WHERE s.student_id = 1;
 -- DROP TABLE student_course;
 -- DROP TABLE courses;
 -- DROP TABLE students;
+
+SELECT id FROM student_course WHERE student_id= 2;
+UPDATE student_course SET course_id= 4 WHERE id= 3 AND student_id=3 RETURNING *;
+SELECT id FROM student_course WHERE student_id= 2;

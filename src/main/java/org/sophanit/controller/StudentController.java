@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -57,15 +58,52 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Student>> updateStudentById(@PathVariable("id") Integer studentId){
-        return null;
+    public ResponseEntity<Response<Student>> updateStudentById(@PathVariable("id") Integer studentId,@RequestBody StudentRequest studentRequest){
+        Integer storeId = studentService.updateStudent(studentId,studentRequest);
+        List<Integer> oldCourseListId = studentService.findOldIdCourse(storeId);
+        studentService.updateCourse(storeId,oldCourseListId,studentRequest);
+        studentService.addCourseList(storeId,studentRequest.getCourseId());
+        Response<Student> response = null;
+        if (storeId!=null){
+            response = Response.<Student>builder()
+                    .message("Updated Successfully")
+                    .payload(studentService.getStudentById(storeId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Student>builder()
+                    .message("Updated not Success")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
 
     }
 
     @PostMapping("/")
     public ResponseEntity<Response<Student>> addNewStudent(@RequestBody StudentRequest studentRequest){
-
-        return null;
+        Integer storeId = studentService.addNewStudent(studentRequest);
+        studentService.addCourseList(storeId,studentRequest.getCourseId());
+        Response<Student> response = null;
+        if (storeId!=null){
+            response = Response.<Student>builder()
+                    .message("Adding new Student Successfully")
+                    .payload(studentService.getStudentById(storeId))
+                    .httpStatus(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }else {
+            response = Response.<Student>builder()
+                    .message("Can Not add new student")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return ResponseEntity.ok(response);
+        }
 
     }
 
