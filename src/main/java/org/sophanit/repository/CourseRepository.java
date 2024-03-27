@@ -8,12 +8,14 @@ import java.util.List;
 @Mapper
 public interface CourseRepository {
 
-    @Select("SELECT * FROM courses INNER JOIN instructors ON courses.course_id = instructors.instructor_id")
+    @Select("SELECT * FROM courses INNER JOIN student_course ON courses.course_id = student_course.course_id")
     @Results(
             id = "courseMapper",
             value = {
                     @Result(property = "courseId",column = "course_id"),
-                    @Result(property = "courseName",column = "course_name")
+                    @Result(property = "courseName",column = "course_name"),
+                    @Result(property = "instructor",column = "instructor_id",
+                    many = @Many(select = "org.sophanit.repository.InstructorRepository.findInstructorById"))
             }
     )
     List<Course> getAllCourses();

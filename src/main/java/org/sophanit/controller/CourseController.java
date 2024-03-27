@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Course>> updateCourseById(@PathVariable("id") Integer instructorId){
+    public ResponseEntity<Response<Course>> updateCourseById(@PathVariable("id") Integer courseId){
         return null;
 
     }

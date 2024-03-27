@@ -1,6 +1,5 @@
 package org.sophanit.controller;
 
-import org.sophanit.model.Instructor;
 import org.sophanit.model.Student;
 import org.sophanit.model.response.Response;
 import org.sophanit.service.StudentService;
